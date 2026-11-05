@@ -6,7 +6,7 @@ import { formatWebSearchResult } from "./format.ts";
 import { resolveWebSearchModel, webSearchModelError, errorResult } from "./utils.ts";
 
 export const WebSearchSchema = Type.Object({
-    query: Type.String({ description: "The search query or question to answer" }),
+    query: Type.String({ description: "Ask an internet-connected agent" }),
     urls: Type.Optional(Type.Array(Type.String(), { 
         description: "Additional URLs to analyze along with search (up to 20)",
         maxItems: 20
