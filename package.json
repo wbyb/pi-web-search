@@ -1,7 +1,7 @@
 {
   "name": "pi-web-search",
   "version": "1.7.0",
-  "description": "Provider-native web search for pi: Gemini + URL Context, xAI Grok, OpenAI Responses (Azure/Codex/Copilot), Anthropic, DeepSeek, and OpenCode Zen/Go",
+  "description": "DeepSeek web search and fetch tools for pi",
   "type": "module",
   "main": "src/index.ts",
   "keywords": [
@@ -9,18 +9,8 @@
     "pi-extension",
     "pi-package",
     "web-search",
-    "gemini",
-    "google",
-    "xai",
-    "grok",
-    "openai",
-    "anthropic",
-    "deepseek",
-    "opencode",
-    "opencode-zen",
-    "url-context",
-    "url-analysis",
-    "youtube"
+    "web-fetch",
+    "deepseek"
   ],
   "author": "ttttmr",
   "license": "MIT",
@@ -37,9 +27,7 @@
     "README.md"
   ],
   "scripts": {
-    "test": "node --test tests/*.test.mjs",
-    "test:real:web-search": "node tests/real-web-search.mjs",
-    "test:real:url-context": "node tests/real-url-context.mjs"
+    "test": "node --test tests/*.test.mjs"
   },
   "devDependencies": {
     "@earendil-works/pi-ai": "^0.99.0",
