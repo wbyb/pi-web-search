@@ -1,4 +1,4 @@
-import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
+import type { ExtensionAPI, Theme } from "@earendil-works/pi-coding-agent";
 import { Text } from "@earendil-works/pi-tui";
 import { Type } from "typebox";
 import { fetchPage, search } from "./deepseek.ts";
@@ -15,6 +15,24 @@ function result(text: string, details: Record<string, unknown> = {}) {
 function errorResult(error: unknown) {
     const message = error instanceof Error ? error.message : String(error);
     return result(`Error: ${message}`, { error: true });
+}
+
+function formatCall(theme: Theme, label: string, fields: Array<[string, string | undefined]>) {
+    const lines = fields
+        .filter(([, value]) => value !== undefined && value !== "")
+        .map(([key, value]) => `${theme.fg("toolOutput", `${key}:`)} ${theme.fg("accent", value!)}`);
+    return [theme.fg("toolTitle", theme.bold(label)), ...lines].join("\n");
+}
+
+function renderCall(
+    label: string,
+    fields: Array<[string, string | undefined]>,
+    theme: Theme,
+    lastComponent: unknown,
+) {
+    const text = (lastComponent as Text | undefined) ?? new Text("", 0, 0);
+    text.setText(formatCall(theme, label, fields));
+    return text;
 }
 
 export default function (pi: ExtensionAPI) {
@@ -34,6 +52,10 @@ export default function (pi: ExtensionAPI) {
                 return errorResult(error);
             }
         },
+        renderCall: (args, theme, context) => renderCall("web_search", [
+            ["keyword", args.keyword],
+            ["question", args.question],
+        ], theme, context.lastComponent),
         renderResult: () => new Text("", 0, 0),
     });
 
@@ -52,6 +74,7 @@ export default function (pi: ExtensionAPI) {
                 return errorResult(error);
             }
         },
+        renderCall: (args, theme, context) => renderCall("web_fetch", [["url", args.url]], theme, context.lastComponent),
         renderResult: () => new Text("", 0, 0),
     });
 }
